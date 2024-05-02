@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Change Resolution Platform</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link href="styles.css" rel="stylesheet">
+
+</head>
+<body>
+  <div class="container">
+    <h1>Change Resolution Platform</h1>
+    <div class="form-group">
+      <label for="inputAmount">Enter the amount:</label>
+      <input type="number" class="form-control" id="inputAmount">
+    </div>
+    <button class="btn btn-primary" onclick="calculateChange()">Calculate Change</button>
+    <div id="changeResult"></div>
+  </div>
+
+  <script>
+    function calculateChange() {
+      // Get the input amount
+      let inputAmount = document.getElementById('inputAmount').value;
+      
+      // Define the available bank notes
+      let bankNotes = [
+        { value: 10000, name: '10,000 Francs CFA' },
+        { value: 5000, name: '5,000 Francs CFA' },
+        { value: 2000, name: '2,000 Francs CFA' },
+        { value: 1000, name: '1,000 Francs CFA' },
+        { value: 500, name: '500 Francs CFA' }
+      ];
+      
+      // Sort the bank notes in descending order
+      bankNotes.sort((a, b) => b.value - a.value);
+      
+      // Initialize the change object
+      let change = {};
+      
+      // Loop through the bank notes
+      for (let i = 0; i < bankNotes.length; i++) {
+        let note = bankNotes[i];
+        
+        // Exclude the note if it's equal to the input value
+        if (note.value === inputAmount) {
+          continue;
+        }
+        
+        // Calculate the number of notes required
+        let count = Math.floor(inputAmount / note.value);
+        
+        // Update the input amount and change object
+        if (count > 0) {
+          change[note.name] = count;
+          inputAmount %= note.value;
+        }
+      }
+      
+      // Display the change result
+      let result = '';
+      for (let note in change) {
+        result += note + ': ' + change[note] + '<br>';
+      }
+      
+      document.getElementById('changeResult').innerHTML = result;
+    }
+  </script>
+</body>
+</html>
